@@ -42,11 +42,18 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
-            steps {
-                bat 'docker login -u rabten93 -p 160808'
-                bat 'docker push rabten93/todo-backend:latest'
-            }
+       stage('Docker Push') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'docker-hub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+            bat 'docker push rabten93/todo-backend:latest'
         }
+    }
+       
+}
     }
 }
