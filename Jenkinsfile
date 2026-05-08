@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -14,19 +15,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test'
+                bat 'npm test'
             }
             post {
                 always {
@@ -37,20 +38,14 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t rabten93/todo-backend:latest .'
+                bat 'docker build -t rabten93/todo-backend:latest .'
             }
         }
 
         stage('Docker Push') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push rabten93/todo-backend:latest'
-                }
+                bat 'docker login -u rabten93 -p 160808'
+                bat 'docker push rabten93/todo-backend:latest'
             }
         }
     }
