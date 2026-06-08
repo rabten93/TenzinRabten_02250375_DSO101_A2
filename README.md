@@ -59,7 +59,6 @@ The pipeline was configured in Jenkins as follows:
 Running Jenkins on Windows
 
 The Jenkinsfile provided in the assignment used sh commands, which are intended for Linux or Mac systems. Since Jenkins was running on a Windows machine, all sh commands had to be replaced with bat commands. For example, sh 'npm install' was changed to bat 'cd todo-app\\backend && npm install'. Without this change, the pipeline would fail immediately at every stage.
-![alt text](A3_3.png)
 
 Docker not recognized by Jenkins
 
